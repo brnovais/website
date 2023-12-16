@@ -1,2 +1,6 @@
 # Normalize line endings for all files detected as text.
 *                                       text=auto
+
+# Do not normalize line endings for binary files.
+*.ico                                   binary
+*.png                                   binary
