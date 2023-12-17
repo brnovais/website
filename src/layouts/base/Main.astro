@@ -1,4 +1,6 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
+
 import '@fontsource-variable/comfortaa';
 import '@fontsource-variable/open-sans';
 import '@fontsource-variable/lora';
@@ -28,6 +30,8 @@ const { description, title } = Astro.props;
 
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
+
+    <ViewTransitions />
   </head>
 
   <body>
