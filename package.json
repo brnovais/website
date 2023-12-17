@@ -10,6 +10,10 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@fontsource-variable/comfortaa": "^5.0.18",
+    "@fontsource-variable/lora": "^5.0.9",
+    "@fontsource-variable/montserrat": "^5.0.17",
+    "@fontsource-variable/open-sans": "^5.0.20",
     "astro": "^4.0.5",
     "tailwindcss": "^3.3.6"
   },

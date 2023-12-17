@@ -1,4 +1,9 @@
 ---
+import '@fontsource-variable/comfortaa';
+import '@fontsource-variable/open-sans';
+import '@fontsource-variable/lora';
+import '@fontsource-variable/montserrat';
+
 const { description, title } = Astro.props;
 ---
 
@@ -26,6 +31,18 @@ const { description, title } = Astro.props;
   </head>
 
   <body>
-    <slot />
+    <div
+      class="flex
+              min-h-screen
+              flex-col
+              bg-light
+              text-base
+              text-dark
+              selection:bg-brand/30
+              dark:bg-dark
+              dark:text-light"
+    >
+      <slot />
+    </div>
   </body>
 </html>
