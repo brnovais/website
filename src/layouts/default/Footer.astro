@@ -1,5 +1,53 @@
 ---
-
+import EnvelopeIcon from '../../components/icons/heroicons/EnvelopeIcon.astro';
+import GitHubIcon from '../../components/icons/simpleicons/GitHubIcon.astro';
+import LinkedInIcon from '../../components/icons/simpleicons/LinkedInIcon.astro';
+import ComfortaaLogo from '../../components/logos/ComfortaaLogo.astro';
 ---
 
-<footer></footer>
+<footer>
+  <div class="container mx-auto flex flex-wrap-reverse">
+    <div class="m-4 grow md:m-6 xl:m-8">
+      <ComfortaaLogo />
+      <div>&copy; 2023 Bruno Novais</div>
+    </div>
+
+    <nav class="flex flex-wrap" aria-label="Footer">
+      <div class="m-4 flex flex-col space-y-2 md:m-6 xl:m-8">
+        <h5 class="font-bold uppercase text-brand">Navegação</h5>
+
+        <a href="/">Início</a>
+        <a href="/autores/bruno-novais">Sobre</a>
+        <a href="/artigos">Artigos</a>
+        <a href="/cursos">Cursos</a>
+        <a href="/contato">Contato</a>
+      </div>
+
+      <div class="m-4 flex flex-col space-y-2 md:m-6 xl:m-8">
+        <h5 class="font-bold uppercase text-brand">Contato</h5>
+
+        <a href="mailto:hello@brnova.is" class="flex items-center">
+          <EnvelopeIcon className="h-5 w-5 fill-dark dark:fill-light" />
+          <span class="ml-1">hello@brnova.is</span>
+        </a>
+
+        <div class="flex space-x-2">
+          <a
+            href="https://github.com/brnovais"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <GitHubIcon className="h-4 w-4 fill-dark dark:fill-light" />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/brnovais/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <LinkedInIcon className="h-4 w-4 fill-dark dark:fill-light" />
+          </a>
+        </div>
+      </div>
+    </nav>
+  </div>
+</footer>
