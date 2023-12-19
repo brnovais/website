@@ -44,6 +44,7 @@ export default {
         900: '#212121',
         DEFAULT: '#FAFAFA',
       },
+      transparent: 'transparent',
     },
     extend: {},
     fontFamily: {
