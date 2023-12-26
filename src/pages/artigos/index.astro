@@ -1,5 +1,9 @@
 ---
+import { getCollection } from 'astro:content';
+
 import DefaultLayout from '../../layouts/default/Main.astro';
+
+const articles = await getCollection('articles');
 ---
 
 <DefaultLayout
@@ -7,4 +11,13 @@ import DefaultLayout from '../../layouts/default/Main.astro';
   description="Página com a lista de artigos publicados no meu espaço pessoal online, com assuntos variando entre algoritmos, criptografia, finanças quantitativas, redes de computadores, sistemas distribuídos, web3 e muito mais"
 >
   Artigos
+  <ul>
+    {
+      articles.map((article) => (
+        <li>
+          <a href={`/artigos/${article.slug}`}>{article.data.title}</a>
+        </li>
+      ))
+    }
+  </ul>
 </DefaultLayout>
