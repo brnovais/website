@@ -31,16 +31,18 @@ import MainNavigation from '../../components/navigation/MainNavigation.astro';
 <script>
   const headerRef = document.querySelector('#default-header');
 
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting) {
-        headerRef.classList.remove('border-b');
-      } else {
-        headerRef.classList.add('border-b');
-      }
-    },
-    { root: null, rootMargin: '-1px 0px 0px 0px', threshold: 1.0 }
-  );
+  if (headerRef != null) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          headerRef.classList.remove('border-b');
+        } else {
+          headerRef.classList.add('border-b');
+        }
+      },
+      { root: null, rootMargin: '-1px 0px 0px 0px', threshold: 1.0 }
+    );
 
-  observer.observe(headerRef);
+    observer.observe(headerRef);
+  }
 </script>
