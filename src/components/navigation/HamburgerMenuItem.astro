@@ -1,0 +1,27 @@
+---
+const pathname = new URL(Astro.request.url).pathname;
+
+const { href } = Astro.props;
+---
+
+<div class="group flex basis-0 items-center">
+  <a
+    href={href}
+    class:list={[
+      'grow p-2 text-right',
+      href === pathname ? 'font-bold' : 'font-normal',
+    ]}
+  >
+    <slot />
+  </a>
+
+  <div
+    class="h-0
+            w-1
+            rounded-md
+            bg-triadic-purpley
+            duration-500
+            motion-safe:group-hover:h-1/3"
+  >
+  </div>
+</div>

@@ -1,0 +1,95 @@
+---
+
+---
+
+<div class="relative" id="hamburger-menu">
+  <nav
+    class="absolute
+            right-2
+            top-10
+            flex
+            origin-top-right
+            scale-0
+            flex-col
+            rounded-lg
+            bg-dark/10
+            motion-safe:duration-500
+            dark:bg-light/20"
+  >
+    <slot />
+  </nav>
+
+  <button class="relative cursor-pointer space-y-1.5 p-2">
+    <div class="h-0.5 w-7 bg-dark motion-safe:duration-500 dark:bg-light"></div>
+    <div class="h-0.5 w-7 bg-dark motion-safe:duration-500 dark:bg-light"></div>
+    <div class="h-0.5 w-7 bg-dark motion-safe:duration-500 dark:bg-light"></div>
+  </button>
+</div>
+
+<script>
+  const pageLoad = (): void => {
+    const menuRef: HTMLInputElement | null =
+      document.querySelector('#hamburger-menu');
+
+    if (menuRef != null) {
+      const openMenu = (
+        dataset: DOMStringMap,
+        children: HTMLCollection
+      ): void => {
+        dataset.state = 'open';
+
+        children[0].classList.remove('scale-0');
+
+        children[1].children[0].classList.add('translate-y-2', 'rotate-45');
+        children[1].children[1].classList.add('opacity-0');
+        children[1].children[2].classList.add('-translate-y-2', '-rotate-45');
+      };
+
+      const closeMenu = (
+        dataset: DOMStringMap,
+        children: HTMLCollection
+      ): void => {
+        dataset.state = 'closed';
+
+        children[0].classList.add('scale-0');
+
+        children[1].children[0].classList.remove('translate-y-2', 'rotate-45');
+        children[1].children[1].classList.remove('opacity-0');
+        children[1].children[2].classList.remove(
+          '-translate-y-2',
+          '-rotate-45'
+        );
+      };
+
+      const onClick = (): any => {
+        if (menuRef.dataset.state == 'open') {
+          closeMenu(menuRef.dataset, menuRef.children);
+        } else {
+          openMenu(menuRef.dataset, menuRef.children);
+        }
+      };
+
+      const mouseDown = (event: MouseEvent): void => {
+        const target: EventTarget | null = event.target;
+
+        if (target instanceof Node && !menuRef.contains(target)) {
+          closeMenu(menuRef.dataset, menuRef.children);
+        }
+      };
+
+      const handleEscape = (event: KeyboardEvent): void => {
+        if (event.key === 'Escape') {
+          closeMenu(menuRef.dataset, menuRef.children);
+        }
+      };
+
+      menuRef.dataset.state = 'closed';
+
+      menuRef.addEventListener('click', onClick);
+      document.addEventListener('mousedown', mouseDown);
+      document.addEventListener('keydown', handleEscape);
+    }
+  };
+
+  document.addEventListener('astro:page-load', pageLoad);
+</script>
