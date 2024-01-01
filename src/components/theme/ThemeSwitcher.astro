@@ -1,0 +1,128 @@
+---
+import MoonMiniIcon from '../../components/icons/heroicons/MoonMiniIcon.astro';
+import SunMiniIcon from '../../components/icons/heroicons/SunMiniIcon.astro';
+---
+
+<button
+  class="h-9
+          w-9
+          rounded-lg
+          p-1
+          hover:bg-dark-100
+          dark:hover:bg-light-800"
+  id="theme-selector"
+>
+  <SunMiniIcon
+    className="hidden h-5 w-5 fill-dark dark:fill-light"
+    id="sun-icon"
+  />
+
+  <MoonMiniIcon
+    className="hidden h-5 w-5 fill-dark dark:fill-light"
+    id="moon-icon"
+  />
+</button>
+
+<script>
+  const LOCAL_STORAGE_KEY: string = 'theme';
+
+  const getTheme = (): string => {
+    let theme: string | null = localStorage.getItem(LOCAL_STORAGE_KEY);
+
+    if (
+      theme === 'dark' ||
+      (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ) {
+      return 'dark';
+    }
+
+    return 'light';
+  };
+
+  const loadThemeIcon = (theme: string | null): void => {
+    const buttonRef: HTMLElement | null =
+      document.querySelector('#theme-selector');
+
+    if (buttonRef != null) {
+      if (
+        theme === 'dark' ||
+        (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      ) {
+        buttonRef.children[0].classList.remove('hidden');
+        buttonRef.children[1].classList.add('hidden');
+      } else {
+        buttonRef.children[0].classList.add('hidden');
+        buttonRef.children[1].classList.remove('hidden');
+      }
+    }
+  };
+
+  const loadTheme = (theme: string | null): void => {
+    if (
+      theme === 'dark' ||
+      (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
+
+  const pageLoad = (): void => {
+    const buttonRef: HTMLElement | null =
+      document.querySelector('#theme-selector');
+
+    if (buttonRef != null) {
+      const toggleTheme = (): string => {
+        let theme: string | null = getTheme();
+
+        if (
+          theme === 'dark' ||
+          (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+          theme = 'light';
+        } else {
+          theme = 'dark';
+        }
+
+        return theme;
+      };
+
+      const saveTheme = (theme: string): void => {
+        if (theme) {
+          localStorage.setItem(LOCAL_STORAGE_KEY, theme);
+        } else {
+          localStorage.removeItem(LOCAL_STORAGE_KEY);
+        }
+      };
+
+      const onClick = (): any => {
+        let theme: string = toggleTheme();
+
+        saveTheme(theme);
+        loadTheme(theme);
+        loadThemeIcon(theme);
+      };
+
+      const theme: string = getTheme();
+
+      loadTheme(theme);
+      loadThemeIcon(theme);
+
+      buttonRef.addEventListener('click', onClick);
+    }
+  };
+
+  document.addEventListener('astro:page-load', pageLoad);
+
+  const themeStorageListener = (storageEvent: StorageEvent): void => {
+    if (storageEvent.key === LOCAL_STORAGE_KEY) {
+      let theme: string | null = storageEvent.newValue;
+
+      loadTheme(theme);
+      loadThemeIcon(theme);
+    }
+  };
+
+  window.addEventListener('storage', themeStorageListener);
+</script>

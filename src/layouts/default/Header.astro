@@ -2,6 +2,7 @@
 import ComfortaaLogo from '../../components/logos/ComfortaaLogo.astro';
 import HamburgerMenu from '../../components/navigation/HamburgerMenu.astro';
 import HamburgerMenuItem from '../../components/navigation/HamburgerMenuItem.astro';
+import ThemeSwitcher from '../../components/theme/ThemeSwitcher.astro';
 import MainNavigation from '../../components/navigation/MainNavigation.astro';
 ---
 
@@ -28,6 +29,8 @@ import MainNavigation from '../../components/navigation/MainNavigation.astro';
       <MainNavigation />
     </div>
 
+    <ThemeSwitcher />
+
     <HamburgerMenu>
       <HamburgerMenuItem href="/">Início</HamburgerMenuItem>
       <HamburgerMenuItem href="/autores/bruno-novais">Sobre</HamburgerMenuItem>
@@ -39,7 +42,8 @@ import MainNavigation from '../../components/navigation/MainNavigation.astro';
 </header>
 
 <script>
-  const headerRef = document.querySelector('#default-header');
+  const headerRef: HTMLElement | null =
+    document.querySelector('#default-header');
 
   if (headerRef != null) {
     const observer = new IntersectionObserver(
