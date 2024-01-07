@@ -1,5 +1,5 @@
 ---
-import ArrowLongRightMiniIcon from '@components/icons/heroicons/ArrowLongRightMiniIcon.astro';
+import ArrowLongRightIcon from '@components/icons/heroicons/ArrowLongRightIcon.astro';
 ---
 
 <section
@@ -24,8 +24,9 @@ import ArrowLongRightMiniIcon from '@components/icons/heroicons/ArrowLongRightMi
             lg:bg-transparent
             xl:px-8"
   >
-    <h2
-      class="font-montserrat
+    <span
+      class="block
+              font-montserrat
               text-4xl
               font-bold
               md:text-5xl
@@ -34,24 +35,22 @@ import ArrowLongRightMiniIcon from '@components/icons/heroicons/ArrowLongRightMi
       Ajudando a
       <span class="text-5xl text-brand md:text-6xl xl:text-7xl">
         criar
-        <br class="hidden md:inline-block" />
+        <br class="hidden md:inline" />
          um mundo
       </span>
        melhor
-    </h2>
+    </span>
 
-    <h2
+    <span
       class="font-lora
               text-xl
               tracking-widest
               md:text-2xl
               xl:text-3xl"
     >
-      <span class="inline-block align-middle">
-        <ArrowLongRightMiniIcon className="h-5 w-5 fill-dark dark:fill-light" />
-      </span>
+      <ArrowLongRightIcon className="inline h-5 w-5" />
        uma instrução por vez
-    </h2>
+    </span>
   </div>
 
   <div
