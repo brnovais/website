@@ -1,7 +1,7 @@
 ---
 const pathname = new URL(Astro.request.url).pathname;
 
-const { href } = Astro.props;
+const { className, href } = Astro.props;
 ---
 
 <a
@@ -10,6 +10,7 @@ const { href } = Astro.props;
     'rounded-lg px-4 py-1.5 font-montserrat',
     'hover:bg-dark-100 dark:hover:bg-light-800',
     href === pathname ? 'font-bold' : 'font-normal',
+    className,
   ]}
 >
   <slot />

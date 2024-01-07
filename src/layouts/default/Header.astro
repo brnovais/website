@@ -1,8 +1,14 @@
 ---
+import AcademicCapIcon from '@components/icons/heroicons/AcademicCapIcon.astro';
+import DocumentTextIcon from '@components/icons/heroicons/DocumentTextIcon.astro';
+import EnvelopeIcon from '@components/icons/heroicons/EnvelopeIcon.astro';
+import HomeIcon from '@components/icons/heroicons/HomeIcon.astro';
+import UserIcon from '@components/icons/heroicons/UserIcon.astro';
 import ComfortaaLogo from '@components/logos/ComfortaaLogo.astro';
 import AutismLink from '@components/navigation/AutismLink.astro';
 import HamburgerMenu from '@components/navigation/HamburgerMenu.astro';
 import HamburgerMenuItem from '@components/navigation/HamburgerMenuItem.astro';
+import SearchBox from '@components/navigation/SearchBox.astro';
 import ThemeSwitcher from '@components/navigation/ThemeSwitcher.astro';
 import MainNavigation from '@components/navigation/MainNavigation.astro';
 ---
@@ -13,7 +19,7 @@ import MainNavigation from '@components/navigation/MainNavigation.astro';
           top-0
           z-40
           mt-2
-          border-dark/5
+          border-dark/20
           bg-light/80
           backdrop-blur-sm
           dark:border-light/10
@@ -30,15 +36,33 @@ import MainNavigation from '@components/navigation/MainNavigation.astro';
       <MainNavigation />
     </div>
 
+    <SearchBox />
     <AutismLink />
     <ThemeSwitcher />
 
     <HamburgerMenu>
-      <HamburgerMenuItem href="/">Início</HamburgerMenuItem>
-      <HamburgerMenuItem href="/sobre/bruno-novais/">Sobre</HamburgerMenuItem>
-      <HamburgerMenuItem href="/artigos">Artigos</HamburgerMenuItem>
-      <HamburgerMenuItem href="/cursos">Cursos</HamburgerMenuItem>
-      <HamburgerMenuItem href="/contato">Contato</HamburgerMenuItem>
+      <HamburgerMenuItem href="/">
+        <span class="align-top">
+          Início
+          <HomeIcon className="inline h-6 w-6" />
+        </span>
+      </HamburgerMenuItem>
+      <HamburgerMenuItem href="/sobre/bruno-novais/">
+        Sobre
+        <UserIcon className="inline h-6 w-6" />
+      </HamburgerMenuItem>
+      <HamburgerMenuItem href="/artigos">
+        Artigos
+        <DocumentTextIcon className="inline h-6 w-6" />
+      </HamburgerMenuItem>
+      <HamburgerMenuItem href="/cursos">
+        Cursos
+        <AcademicCapIcon className="inline h-6 w-6" />
+      </HamburgerMenuItem>
+      <HamburgerMenuItem href="/contato">
+        Contato
+        <EnvelopeIcon className="inline h-6 w-6" />
+      </HamburgerMenuItem>
     </HamburgerMenu>
   </div>
 </header>

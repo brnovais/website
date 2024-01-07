@@ -1,0 +1,103 @@
+---
+import MagnifyingGlassIcon from '@components/icons/heroicons/MagnifyingGlassIcon.astro';
+---
+
+<div class="relative" id="search-box">
+  <form
+    class="absolute
+            right-2
+            top-10
+            w-96
+            origin-top-right
+            scale-100
+            shadow-lg
+            motion-safe:duration-500"
+  >
+    <div class="relative">
+      <div
+        class="pointer-events-none
+                absolute
+                inset-y-0
+                start-0
+                flex
+                items-center
+                ps-3"
+      >
+        <MagnifyingGlassIcon className="h-4 w-4" />
+      </div>
+
+      <input
+        type="search"
+        class="block
+                w-full
+                rounded-lg
+                border
+                border-dark-300
+                bg-dark-50
+                p-4
+                text-sm
+                dark:border-dark-700
+                dark:bg-dark-800"
+        placeholder="Pesquisar artigos, cursos..."
+        required
+      />
+
+      <button
+        type="submit"
+        class="absolute
+                bottom-2.5
+                end-2.5
+                rounded-lg
+                px-4
+                py-2
+                text-sm"
+      >
+        Pesquisar
+      </button>
+    </div>
+  </form>
+
+  <button
+    class="h-9
+            w-9
+            rounded-lg
+            p-1
+            hover:bg-dark-100
+            dark:hover:bg-light-800"
+  >
+    <MagnifyingGlassIcon className="inset-0" />
+  </button>
+</div>
+
+<script>
+  const pageLoad = (): void => {
+    const searchBoxRef: HTMLElement | null =
+      document.querySelector('#search-box');
+
+    if (searchBoxRef != null) {
+      const onClick = (): any => {
+        searchBoxRef.children[0].classList.toggle('scale-0');
+      };
+
+      const mouseDown = (event: MouseEvent): void => {
+        const target: EventTarget | null = event.target;
+
+        if (target instanceof Node && !searchBoxRef.contains(target)) {
+          searchBoxRef.children[0].classList.add('scale-0');
+        }
+      };
+
+      const handleEscape = (event: KeyboardEvent): void => {
+        if (event.key === 'Escape') {
+          searchBoxRef.children[0].classList.add('scale-0');
+        }
+      };
+
+      searchBoxRef.children[1].addEventListener('click', onClick);
+      document.addEventListener('mousedown', mouseDown);
+      document.addEventListener('keydown', handleEscape);
+    }
+  };
+
+  document.addEventListener('astro:page-load', pageLoad);
+</script>

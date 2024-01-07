@@ -4,8 +4,12 @@ import MainNavigationItem from './MainNavigationItem.astro';
 
 <nav class="flex space-x-2">
   <MainNavigationItem href="/">Início</MainNavigationItem>
-  <MainNavigationItem href="/sobre/bruno-novais">Sobre</MainNavigationItem>
-  <MainNavigationItem href="/artigos">Artigos</MainNavigationItem>
-  <MainNavigationItem href="/cursos">Cursos</MainNavigationItem>
+  <MainNavigationItem href="/sobre/bruno-novais/">Sobre</MainNavigationItem>
+  <MainNavigationItem className="hidden md:block" href="/artigos">
+    Artigos
+  </MainNavigationItem>
+  <MainNavigationItem className="hidden lg:block" href="/cursos">
+    Cursos
+  </MainNavigationItem>
   <MainNavigationItem href="/contato">Contato</MainNavigationItem>
 </nav>

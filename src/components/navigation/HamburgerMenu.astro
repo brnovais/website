@@ -8,20 +8,23 @@
             right-2
             top-10
             flex
+            w-32
             origin-top-right
             scale-0
             flex-col
+            overflow-hidden
             rounded-lg
-            bg-dark/10
+            bg-light/95
+            shadow-lg
             motion-safe:duration-500
-            dark:bg-light/20"
+            dark:bg-dark/90"
   >
     <slot />
   </nav>
 
   <button class="relative cursor-pointer space-y-1.5 p-2">
     <div class="h-0.5 w-7 bg-dark motion-safe:duration-500 dark:bg-light"></div>
-    <div class="h-0.5 w-7 bg-dark motion-safe:duration-500 dark:bg-light"></div>
+    <div class="h-0.5 w-7 bg-dark motion-safe:duration-100 dark:bg-light"></div>
     <div class="h-0.5 w-7 bg-dark motion-safe:duration-500 dark:bg-light"></div>
   </button>
 </div>
