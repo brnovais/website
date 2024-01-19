@@ -1,88 +1,57 @@
 ---
-import AcademicCapIcon from '@components/icons/heroicons/AcademicCapIcon.astro';
-import DocumentTextIcon from '@components/icons/heroicons/DocumentTextIcon.astro';
-import EnvelopeIcon from '@components/icons/heroicons/EnvelopeIcon.astro';
-import HomeIcon from '@components/icons/heroicons/HomeIcon.astro';
-import UserIcon from '@components/icons/heroicons/UserIcon.astro';
 import ComfortaaLogo from '@components/logos/ComfortaaLogo.astro';
-import AutismLink from '@components/navigation/AutismLink.astro';
-import HamburgerMenu from '@components/navigation/HamburgerMenu.astro';
-import HamburgerMenuItem from '@components/navigation/HamburgerMenuItem.astro';
-import SearchBox from '@components/navigation/SearchBox.astro';
-import ThemeSwitcher from '@components/navigation/ThemeSwitcher.astro';
+import ExtendedNavigation from '@components/navigation/ExtendedNavigation.astro';
 import MainNavigation from '@components/navigation/MainNavigation.astro';
 ---
 
-<header
-  id="default-header"
-  class="sticky
-          top-0
-          z-40
-          mt-2
-          border-dark/20
-          bg-light/80
-          backdrop-blur-sm
-          dark:border-light/10
-          dark:bg-dark/80
-          md:mt-4
-          xl:mt-6"
+<default-header
+  class:list={[
+    'sticky top-0 z-40 mt-2 backdrop-blur-sm md:mt-4 xl:mt-6',
+    'border-dark/20 bg-light/80',
+    'dark:border-light/10 dark:bg-dark/80',
+  ]}
+  role="banner"
+  aria-label="Cabeçalho"
 >
-  <div class="container mx-auto flex items-center px-4 py-4 md:px-6 xl:px-8">
+  <div class="container mx-auto flex items-center p-4 md:px-6 xl:px-8">
     <div class="grow">
       <ComfortaaLogo />
     </div>
 
-    <div class="hidden sm:block">
+    <nav class="flex items-center">
+      <ExtendedNavigation />
       <MainNavigation />
-    </div>
-
-    <SearchBox />
-    <AutismLink />
-    <ThemeSwitcher />
-
-    <HamburgerMenu>
-      <HamburgerMenuItem href="/">
-        <span class="align-top">
-          Início
-          <HomeIcon className="inline h-6 w-6" />
-        </span>
-      </HamburgerMenuItem>
-      <HamburgerMenuItem href="/sobre/bruno-novais/">
-        Sobre
-        <UserIcon className="inline h-6 w-6" />
-      </HamburgerMenuItem>
-      <HamburgerMenuItem href="/artigos">
-        Artigos
-        <DocumentTextIcon className="inline h-6 w-6" />
-      </HamburgerMenuItem>
-      <HamburgerMenuItem href="/cursos">
-        Cursos
-        <AcademicCapIcon className="inline h-6 w-6" />
-      </HamburgerMenuItem>
-      <HamburgerMenuItem href="/contato">
-        Contato
-        <EnvelopeIcon className="inline h-6 w-6" />
-      </HamburgerMenuItem>
-    </HamburgerMenu>
+    </nav>
   </div>
-</header>
+</default-header>
 
 <script>
-  const headerRef: HTMLElement | null =
-    document.querySelector('#default-header');
+  class DefaultHeader extends HTMLElement {
+    private observer: IntersectionObserver = null;
 
-  if (headerRef != null) {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          headerRef.classList.remove('border-b');
-        } else {
-          headerRef.classList.add('border-b');
-        }
-      },
-      { root: null, rootMargin: '-1px 0px 0px 0px', threshold: 1.0 }
-    );
+    constructor() {
+      super();
 
-    observer.observe(headerRef);
+      this.observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            this.classList.remove('border-b');
+          } else {
+            this.classList.add('border-b');
+          }
+        },
+        { root: null, rootMargin: '-1px 0px 0px 0px', threshold: 1.0 }
+      );
+    }
+
+    connectedCallback(): void {
+      this.observer.observe(this);
+    }
+
+    disconnectedCallback(): void {
+      this.observer.unobserve(this);
+    }
   }
+
+  customElements.define('default-header', DefaultHeader);
 </script>

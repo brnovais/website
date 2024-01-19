@@ -1,0 +1,19 @@
+---
+import NavigationItem from '@components/navigation/NavigationItem.astro';
+---
+
+<div class="flex hidden items-center sm:block">
+  <NavigationItem href="/">Início</NavigationItem>
+
+  <NavigationItem href="/sobre/bruno-novais/">Sobre</NavigationItem>
+
+  <NavigationItem className="hidden md:inline" href="/artigos">
+    Artigos
+  </NavigationItem>
+
+  <NavigationItem className="hidden lg:inline" href="/cursos">
+    Cursos
+  </NavigationItem>
+
+  <NavigationItem href="/contato">Contato</NavigationItem>
+</div>

@@ -1,9 +1,14 @@
 ---
-
+import AcademicCapIcon from '@components/icons/heroicons/AcademicCapIcon.astro';
+import DocumentTextIcon from '@components/icons/heroicons/DocumentTextIcon.astro';
+import EnvelopeIcon from '@components/icons/heroicons/EnvelopeIcon.astro';
+import HamburgerMenuItem from '@components/navigation/HamburgerMenuItem.astro';
+import HomeIcon from '@components/icons/heroicons/HomeIcon.astro';
+import UserIcon from '@components/icons/heroicons/UserIcon.astro';
 ---
 
-<div class="relative" id="hamburger-menu">
-  <nav
+<hamburger-menu class="relative">
+  <div
     class="absolute
             right-2
             top-10
@@ -19,80 +24,109 @@
             motion-safe:duration-500
             dark:bg-dark/90"
   >
-    <slot />
-  </nav>
+    <HamburgerMenuItem href="/">
+      Início <HomeIcon className="inline size-6" />
+    </HamburgerMenuItem>
 
-  <button class="relative cursor-pointer space-y-1.5 p-2">
+    <HamburgerMenuItem href="/sobre/bruno-novais/">
+      Sobre <UserIcon className="inline size-6" />
+    </HamburgerMenuItem>
+
+    <HamburgerMenuItem href="/artigos">
+      Artigos <DocumentTextIcon className="inline size-6" />
+    </HamburgerMenuItem>
+
+    <HamburgerMenuItem href="/cursos">
+      Cursos <AcademicCapIcon className="inline size-6" />
+    </HamburgerMenuItem>
+
+    <HamburgerMenuItem href="/contato">
+      Contato <EnvelopeIcon className="inline size-6" />
+    </HamburgerMenuItem>
+  </div>
+
+  <button class="relative box-border space-y-1.5">
     <div class="h-0.5 w-7 bg-dark motion-safe:duration-500 dark:bg-light"></div>
     <div class="h-0.5 w-7 bg-dark motion-safe:duration-100 dark:bg-light"></div>
     <div class="h-0.5 w-7 bg-dark motion-safe:duration-500 dark:bg-light"></div>
   </button>
-</div>
+</hamburger-menu>
 
 <script>
-  const pageLoad = (): void => {
-    const menuRef: HTMLElement | null =
-      document.querySelector('#hamburger-menu');
+  class HamburgerMenu extends HTMLElement {
+    private isOpen: boolean = false;
 
-    if (menuRef != null) {
-      const openMenu = (
-        dataset: DOMStringMap,
-        children: HTMLCollection
-      ): void => {
-        dataset.state = 'open';
+    constructor() {
+      super();
+    }
 
-        children[0].classList.remove('scale-0');
+    connectedCallback(): void {
+      document.addEventListener('keydown', this, false);
+      document.addEventListener('mousedown', this, false);
+      this.addEventListener('click', this.onClick);
+    }
 
-        children[1].children[0].classList.add('translate-y-2', 'rotate-45');
-        children[1].children[1].classList.add('opacity-0');
-        children[1].children[2].classList.add('-translate-y-2', '-rotate-45');
-      };
+    disconnectedCallback(): void {
+      this.removeEventListener('click', this.onClick);
+      document.removeEventListener('mousedown', this);
+      document.removeEventListener('keydown', this);
+    }
 
-      const closeMenu = (
-        dataset: DOMStringMap,
-        children: HTMLCollection
-      ): void => {
-        dataset.state = 'closed';
+    onClick(event: MouseEvent): void {
+      this.toggle();
+    }
 
-        children[0].classList.add('scale-0');
-
-        children[1].children[0].classList.remove('translate-y-2', 'rotate-45');
-        children[1].children[1].classList.remove('opacity-0');
-        children[1].children[2].classList.remove(
-          '-translate-y-2',
-          '-rotate-45'
-        );
-      };
-
-      const onClick = (): any => {
-        if (menuRef.dataset.state == 'open') {
-          closeMenu(menuRef.dataset, menuRef.children);
-        } else {
-          openMenu(menuRef.dataset, menuRef.children);
-        }
-      };
-
-      const mouseDown = (event: MouseEvent): void => {
+    handleEvent(event: KeyboardEvent | MouseEvent): void {
+      if (event instanceof MouseEvent) {
         const target: EventTarget | null = event.target;
 
-        if (target instanceof Node && !menuRef.contains(target)) {
-          closeMenu(menuRef.dataset, menuRef.children);
+        if (target instanceof Node && !this.contains(target)) {
+          this.close();
         }
-      };
-
-      const handleEscape = (event: KeyboardEvent): void => {
+      } else {
         if (event.key === 'Escape') {
-          closeMenu(menuRef.dataset, menuRef.children);
+          this.close();
         }
-      };
-
-      menuRef.dataset.state = 'closed';
-
-      menuRef.addEventListener('click', onClick);
-      document.addEventListener('mousedown', mouseDown);
-      document.addEventListener('keydown', handleEscape);
+      }
     }
-  };
 
-  document.addEventListener('astro:page-load', pageLoad);
+    toggle(): void {
+      if (this.isOpen) {
+        this.close();
+      } else {
+        this.open();
+      }
+    }
+
+    open(): void {
+      this.children[0].classList.remove('scale-0');
+
+      this.children[1].children[0].classList.add('translate-y-2', 'rotate-45');
+      this.children[1].children[1].classList.add('opacity-0');
+      this.children[1].children[2].classList.add(
+        '-translate-y-2',
+        '-rotate-45'
+      );
+
+      this.isOpen = true;
+    }
+
+    close(): void {
+      this.children[0].classList.add('scale-0');
+
+      this.children[1].children[0].classList.remove(
+        'translate-y-2',
+        'rotate-45'
+      );
+      this.children[1].children[1].classList.remove('opacity-0');
+      this.children[1].children[2].classList.remove(
+        '-translate-y-2',
+        '-rotate-45'
+      );
+
+      this.isOpen = false;
+    }
+  }
+
+  customElements.define('hamburger-menu', HamburgerMenu);
 </script>

@@ -3,119 +3,95 @@ import MoonIcon from '@components/icons/heroicons/MoonIcon.astro';
 import SunIcon from '@components/icons/heroicons/SunIcon.astro';
 ---
 
-<button
-  class="h-9
-          w-9
-          rounded-lg
-          p-1
-          hover:bg-dark-100
-          dark:hover:bg-light-800"
-  id="theme-selector"
->
-  <SunIcon className="inset-0 hidden" />
-  <MoonIcon className="inset-0 hidden" />
-</button>
+<theme-switcher>
+  <SunIcon className="inline hidden size-6" />
+  <MoonIcon className="inline hidden size-6" />
+</theme-switcher>
 
 <script>
   const LOCAL_STORAGE_KEY: string = 'theme';
 
-  const getTheme = (): string => {
-    let theme: string | null = localStorage.getItem(LOCAL_STORAGE_KEY);
+  class ThemeSwitcher extends HTMLElement {
+    private isDark: boolean = false;
 
-    if (
-      theme === 'dark' ||
-      (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ) {
-      return 'dark';
+    constructor() {
+      super();
+
+      this.load();
     }
 
-    return 'light';
-  };
+    connectedCallback(): void {
+      this.update();
 
-  const loadThemeIcon = (theme: string | null): void => {
-    const buttonRef: HTMLElement | null =
-      document.querySelector('#theme-selector');
+      window.addEventListener('storage', this, false);
+      this.addEventListener('click', this.onClick);
+    }
 
-    if (buttonRef != null) {
+    disconnectedCallback(): void {
+      this.removeEventListener('click', this.onClick);
+      window.removeEventListener('storage', this);
+    }
+
+    onClick(event: MouseEvent): void {
+      this.toggle();
+    }
+
+    handleEvent(storageEvent: StorageEvent): void {
+      if (storageEvent.key === LOCAL_STORAGE_KEY) {
+        this.load();
+        this.update();
+      }
+    }
+
+    save(): void {
+      let theme: string;
+
+      if (this.isDark) {
+        theme = 'dark';
+      } else {
+        theme = 'light';
+      }
+
+      localStorage.setItem(LOCAL_STORAGE_KEY, theme);
+    }
+
+    clear(): void {
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+    }
+
+    load(): void {
+      let theme: string | null = localStorage.getItem(LOCAL_STORAGE_KEY);
+
       if (
         theme === 'dark' ||
         (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
       ) {
-        buttonRef.children[0].classList.remove('hidden');
-        buttonRef.children[1].classList.add('hidden');
+        this.isDark = true;
       } else {
-        buttonRef.children[0].classList.add('hidden');
-        buttonRef.children[1].classList.remove('hidden');
+        this.isDark = false;
       }
     }
-  };
 
-  const loadTheme = (theme: string | null): void => {
-    if (
-      theme === 'dark' ||
-      (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
+    update(): void {
+      if (this.isDark) {
+        document.documentElement.classList.add('dark');
+
+        this.children[0].classList.remove('hidden');
+        this.children[1].classList.add('hidden');
+      } else {
+        document.documentElement.classList.remove('dark');
+
+        this.children[0].classList.add('hidden');
+        this.children[1].classList.remove('hidden');
+      }
     }
-  };
 
-  const pageLoad = (): void => {
-    const buttonRef: HTMLElement | null =
-      document.querySelector('#theme-selector');
-
-    if (buttonRef != null) {
-      const toggleTheme = (): string => {
-        let theme: string | null = getTheme();
-
-        if (
-          theme === 'dark' ||
-          (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
-        ) {
-          theme = 'light';
-        } else {
-          theme = 'dark';
-        }
-
-        return theme;
-      };
-
-      const saveTheme = (theme: string): void => {
-        if (theme) {
-          localStorage.setItem(LOCAL_STORAGE_KEY, theme);
-        } else {
-          localStorage.removeItem(LOCAL_STORAGE_KEY);
-        }
-      };
-
-      const onClick = (): any => {
-        let theme: string = toggleTheme();
-
-        saveTheme(theme);
-        loadTheme(theme);
-        loadThemeIcon(theme);
-      };
-
-      const theme: string = getTheme();
-
-      loadTheme(theme);
-      loadThemeIcon(theme);
-
-      buttonRef.addEventListener('click', onClick);
+    toggle(): void {
+      this.isDark = !this.isDark;
+      this.update();
+      this.save();
     }
-  };
+  }
 
-  document.addEventListener('astro:page-load', pageLoad);
-
-  const themeStorageListener = (storageEvent: StorageEvent): void => {
-    if (storageEvent.key === LOCAL_STORAGE_KEY) {
-      let theme: string | null = storageEvent.newValue;
-
-      loadTheme(theme);
-      loadThemeIcon(theme);
-    }
-  };
-
-  window.addEventListener('storage', themeStorageListener);
+  customElements.define('theme-switcher', ThemeSwitcher);
 </script>
